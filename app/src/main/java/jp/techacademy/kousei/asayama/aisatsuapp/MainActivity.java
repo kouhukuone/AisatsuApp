@@ -12,8 +12,6 @@ import android.widget.TimePicker;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     //変数
     TextView mTextView1;
-    int hourOfDay = 13;      //TimePickerDialogの時間
-    int minute = 0;         //TimePickerDialogの分
 
     //onCreateメソッド
     @Override
@@ -34,29 +32,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             TimePickerDialog timePickerDialog = new TimePickerDialog(this,
                     new TimePickerDialog.OnTimeSetListener() {
                         @Override
+                        //時間設定されたときのイベント
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            Log.d("UI-PARTS", String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
+
+                            //時間によって挨拶を変更する
+                                if ((2 <= hourOfDay && hourOfDay <= 9) && (minute >= 0 && minute <= 59)) {
+                                    mTextView1.setText("おはよう");
+                                } else if ((10 <= hourOfDay && hourOfDay <= 17) && (minute >= 0 && minute <= 59)) {
+                                    mTextView1.setText("こんにちは");
+                                } else if ((hourOfDay < 2 || hourOfDay >= 18) && (minute >= 0 && minute <= 59)) {
+                                    mTextView1.setText("こんばんは");
+                                }
                         }
                     },
-                    hourOfDay,
-                    minute,
+                    13,
+                    0,
                     true);
-
-            //時間によって挨拶を変更する
-            if ((hourOfDay > -1 && hourOfDay < 25) && (minute > -1 && minute < 60)) {
-                if ((2 <= hourOfDay && hourOfDay <= 9) && (minute >= 0 && minute <= 59)) {
-                    mTextView1.setText("おはよう");
                     timePickerDialog.show();
-                } else if ((10 <= hourOfDay && hourOfDay <= 17) && (minute >= 0 && minute <= 59)) {
-                    mTextView1.setText("こんにちは");
-                    timePickerDialog.show();
-                } else if ((hourOfDay < 2 || hourOfDay >= 18) && (minute >= 0 && minute <= 59)) {
-                    mTextView1.setText("こんばんは");
-                    timePickerDialog.show();
-                }
-            }   else {
-                mTextView1.setText("値が不正です");
-            }
         }
     }
 }
